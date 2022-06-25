@@ -23,15 +23,15 @@ if ($num_rows > 0) {
         extract($row);
 
         $staff_item = array(
-            'doc_id' => $doc_id,
+            'staff_id' => $staff_id,
             'name' => $name,
             'address' => $address,
-            'specialization' => $specialization,
+            'department' => $department,
             'salary' => $salary,
-            'pat_id' => $pat_id,
             'email' => $email,
             'phone' => $phone,
-            'appoint_time' => $appoint_time
+            'emergency_contact' => $emergency_contact,
+            'state' => $state
         );
 
         array_push($staff_arr['data'], $staff_item);

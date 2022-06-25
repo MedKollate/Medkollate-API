@@ -9,7 +9,7 @@ include_once "../../models/hospital.php";
 $database = new database;
 $db = $database->connect();
 
-$hospital = new hospital($db);
+$hospital = new hospitals($db);
 
 $result = $hospital->get();
 
@@ -24,11 +24,12 @@ if ($num_rows > 0) {
 
         $hospital_item = array(
             'hosp_name' => $hosp_name,
+            'LGA' => $LGA,
+            'contact_no' => $contact_no,
+            'no_of_staff' => $no_of_staff,
             'location' => $location,
-            'doc_id' => $doc_id,
-            'pat_id' => $pat_id,
-            'appoint_id' => $appoint_id,
-            'pay_id' => $pay_id
+            'gmail' => $gmail,
+            'GRM' => $GRM
         );
 
         array_push($hospital_arr['data'], $hospital_item);
@@ -38,5 +39,5 @@ if ($num_rows > 0) {
 
     echo json_encode($hospital_arr, JSON_PRETTY_PRINT);
 } else {
-    echo json_encode(array('message' => 'No doctor in register'));
+    echo json_encode(array('message' => 'No hospital in register'));
 }

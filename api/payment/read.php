@@ -38,5 +38,5 @@ if ($num_rows > 0) {
 
     echo json_encode($payment_arr, JSON_PRETTY_PRINT);
 } else {
-    echo json_encode(array('message' => 'No doctor in register'));
+    echo json_encode(array('message' => 'No data in register'));
 }

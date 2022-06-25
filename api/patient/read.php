@@ -30,9 +30,13 @@ if ($num_rows > 0) {
             'pat_email' => $pat_email,
             'pat_Dob' => $pat_Dob,
             'pat_marital_status' => $pat_marital_status,
-            'rec_id' => $rec_id,
-            'appoint_time' => $appoint_time,
-            'pay_id' => $pay_id
+            'pat_genotype' => $pat_genotype,
+            'pat_blood_group' => $pat_blood_group,
+            'pat_occupation' => $pat_occupation,
+            'pat_allergy' => $pat_allergy,
+            'pat_height' => $pat_height,
+            'pat_weight' => $pat_weight,
+            'pat_phone' => $pat_phone 
         );
 
         array_push($patients_arr['data'], $patients_item);
