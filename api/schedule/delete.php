@@ -14,8 +14,8 @@ $schedule = new schedules($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$schedule->appoint_id = $data->appoint_id;
+// Check if there the url has the id
+isset($_GET['appoint_id']) ? : die();
 
 //Delete schedule
 if ($schedule->delete()) {

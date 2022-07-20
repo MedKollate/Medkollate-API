@@ -14,8 +14,8 @@ $hospital = new hospitals($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$hospital->hosp_name = $data->hosp_name;
+// Check if there the url has the id
+isset($_GET['hosp_id']) ? : die();
 
 //Delete hospital
 if ($hospital->delete()) {

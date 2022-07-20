@@ -31,6 +31,35 @@
             return $query;
         }
 
+        //Read a payment
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['pat_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE pat_id=$this->id");
+
+            $row = mysqli_fetch_array($query) ;// fetch data;
+
+            // Set properties
+            $this->pat_id = $row['pat_id'];
+            $this->pat_name = $row['pat_name'];
+            $this->pat_addr = $row['pat_addr'];
+            $this->pat_sex = $row['pat_sex'];
+            $this->pat_email = $row['pat_email'];
+            $this->pat_Dob = $row['pat_Dob'];
+            $this->pat_marital_status = $row['pat_marital_status'];
+            $this->pat_genotype = $row['pat_genotype'];
+            $this->pat_blood_group = $row['pat_blood_group'];
+            $this->pat_occupation = $row['pat_occupation'];
+            $this->pat_allergy = $row['pat_allergy'];
+            $this->pat_height = $row['pat_height'];
+            $this->pat_weight = $row['pat_weight'];
+            $this->pat_phone = $row['pat_phone'];
+      }
+
+
         //Create function
         public function create(){
             $sqlQuery = "INSERT INTO
@@ -139,22 +168,10 @@
 
         //Delete Schedule
         public function delete () {
-            $sqlquery  =  "DELETE FROM $this->table WHERE pat_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->pat_id=htmlspecialchars(strip_tags($this->pat_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->pat_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
+            $this->id = $_GET['pat_id'];
+            $query = mysqli_query(
+                $this->conn,
+                "DELETE FROM " . $this->table . " WHERE pat_id=$this->id");
 
         }
     }

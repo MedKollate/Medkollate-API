@@ -25,6 +25,28 @@
             return $query;
         }
 
+        //Read a staff
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['staff_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE staff_id=$this->id");
+
+              $row = mysqli_fetch_array($query); // fetch data
+
+            // Set properties
+            $this->staff_id = $row['staff_id'];
+            $this->name = $row['name'];
+            $this->address = $row['address'];
+            $this->salary = $row['salary'];
+            $this->email = $row['email'];
+            $this->phone = $row['phone'];
+            $this->emergency_contact = $row['emergency_contact'];
+            $this->state = $row['state'];
+      }
+
         //Create function
         public function create(){
             $sqlQuery = "INSERT INTO
@@ -63,7 +85,7 @@
             return false;
         }
 
-        //Update Schedule
+        //Update staff
         public function update(){
             $sqlQuery = "UPDATE
                         ". $this->table ."
@@ -111,22 +133,11 @@
 
         //Delete Schedule
         public function delete () {
-            $sqlquery  =  "DELETE FROM $this->table WHERE staff_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->staff_id=htmlspecialchars(strip_tags($this->staff_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->staff_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
-
-        }
+            public function delete () {
+                $this->id = $_GET['staff_id'];
+                $query = mysqli_query(
+                    $this->conn,
+                    "DELETE FROM " . $this->table . " WHERE staff_id=$this->id");
+    
+            }
     }

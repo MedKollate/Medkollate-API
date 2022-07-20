@@ -28,7 +28,7 @@ if ($num_rows > 0) {
             'amount' => $amount,
             'pay_time' => $pay_time,
             'pay_type' => $pay_type,
-            'pat_date' => $pat_date
+            'pay_date' => $pay_date
         );
 
         array_push($payment_arr['data'], $payment_item);

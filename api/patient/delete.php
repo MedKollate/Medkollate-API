@@ -14,8 +14,8 @@ $patient = new patients($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$patient->pat_id = $data->pat_id;
+// Check if there the url has the id
+isset($_GET['pat_id']) ? : die();
 
 //Delete patient
 if ($patient->delete()) {

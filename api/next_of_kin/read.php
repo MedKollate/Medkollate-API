@@ -25,8 +25,8 @@ if ($num_rows > 0) {
         $next_of_kin_item = array(
             'kin_id' => $kin_id,
             'name' => $name,
-            'phone' => $phone,
-            'gmail' => $gmail,
+            'phone_no' => $phone_no,
+            'email' => $email,
             'relationship' => $relationship,
             'address' => $address
         );

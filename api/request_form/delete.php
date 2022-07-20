@@ -14,8 +14,8 @@ $request_form = new request_forms($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$request_form->request_id = $data->request_id;
+// Check if there the url has the id
+isset($_GET['request_id']) ? : die();
 
 //Delete request_form
 if ($request_form->delete()) {

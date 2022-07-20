@@ -19,7 +19,7 @@ $next_of_kin->kin_id = $data->kin_id;
 
 $next_of_kin->name = $data->name;
 $next_of_kin->phone_no = $data->phone_no;
-$next_of_kin->gmail = $data->gmail;
+$next_of_kin->email = $data->email;
 $next_of_kin->relationship = $data->relationship;
 $next_of_kin->address = $data->address;
 

@@ -18,7 +18,4 @@
 
     }
 
-/*$database = new database;
-if ($database->connect()) {
-    echo "database connected";
-} */
+

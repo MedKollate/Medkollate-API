@@ -14,8 +14,8 @@ $complaint = new complaints($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$complaint->complaint_id = $data->complaint_id;
+// Check if there the url has the id
+isset($_GET['complaint_id']) ? : die();
 
 //Delete complaint
 if ($complaint->delete()) {
