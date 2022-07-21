@@ -14,8 +14,8 @@ $staff = new staffs($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-//Set id to update
-$staff->doc_id = $data->doc_id;
+// Check if there the url has the id
+isset($_GET['staff_id']) ? : die();
 
 //Delete staff
 if ($staff->delete()) {

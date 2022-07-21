@@ -3,6 +3,7 @@
         private $conn;
         private $table = 'payment';
 
+        public $id;
         public $pay_id;
         public $pat_id;
         public $amount;
@@ -14,6 +15,7 @@
             $this->conn = $db;
         }
 
+         //Read payment
         public function get() {
             $query = mysqli_query($this->conn, "SELECT 
             p.pay_id, p.pat_id, p.amount, p.pay_time, p.pay_type, p.pay_date
@@ -22,7 +24,28 @@
             return $query;
         }
 
-        //Create function
+        //Read a payment
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['pay_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE pay_id=$this->id");
+
+              $row = mysqli_fetch_array($query); // fetch data
+
+            // Set properties
+            $this->pay_id = $row['pay_id'];
+            $this->pat_id = $row['pat_id'];
+            $this->amount = $row['amount'];
+            $this->pay_time = $row['pay_time'];
+            $this->pay_type = $row['pay_type'];
+            $this->pay_date = $row['pay_date'];
+      }
+  
+
+        //Create payment
         public function create(){
             $sqlQuery = "INSERT INTO
                         ". $this->table ."
@@ -57,7 +80,7 @@
             return false;
         }
 
-        //Update Schedule
+        //Update payment
         public function update(){
             $sqlQuery = "UPDATE
                         ". $this->table ."
@@ -96,24 +119,12 @@
             return false;
         }
 
-        //Delete Schedule
+        //Delete Payment
         public function delete () {
-            $sqlquery  =  "DELETE FROM $this->table WHERE pay_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->pay_id=htmlspecialchars(strip_tags($this->pay_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->pay_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
+            $this->id = $_GET['pay_id'];
+            $query = mysqli_query(
+                $this->conn,
+                "DELETE FROM " . $this->table . " WHERE pay_id=$this->id");
 
         }
     }

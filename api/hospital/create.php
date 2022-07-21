@@ -20,7 +20,7 @@ $hospital->LGA = $data->LGA;
 $hospital->contact_no = $data->contact_no;
 $hospital->no_of_staff = $data->no_of_staff;
 $hospital->location = $data->location;
-$hospital->gmail = $data->gmail;
+$hospital->email = $data->email;
 $hospital->GRM = $data->GRM;
 
 if ($hospital->create()) {

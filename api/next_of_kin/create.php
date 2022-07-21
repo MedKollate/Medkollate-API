@@ -17,7 +17,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 $next_of_kin->name = $data->name;
 $next_of_kin->phone_no = $data->phone_no;
-$next_of_kin->gmail = $data->gmail;
+$next_of_kin->email = $data->gmail;
 $next_of_kin->relationship = $data->relationship;
 $next_of_kin->address = $data->address;
 

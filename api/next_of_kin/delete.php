@@ -15,7 +15,7 @@ $next_of_kin = new next_of_kins($db);
 $data = json_decode(file_get_contents("php://input"));
 
 //Set id to update
-$next_of_kin->kin_id = $data->kin_id;
+isset($_GET["kin_id"]) ? : die();
 
 //Delete next_of_kin
 if ($next_of_kin->delete()) {

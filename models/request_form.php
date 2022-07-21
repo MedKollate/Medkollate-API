@@ -7,7 +7,7 @@
         public $name;
         public $sub_position;
         public $date;
-        public $gmail;
+        public $email;
         public $phone_no;
         public $description;
 
@@ -17,12 +17,31 @@
 
         public function get() {
             $query = mysqli_query($this->conn, "SELECT 
-            r.request_id, r.name, r.sub_position, r.date, r.gmail, r.phone_no, r.description
+            r.request_id, r.name, r.sub_position, r.date, r.email, r.phone_no, r.description
             FROM $this->table r  ORDER BY request_id  ");
 
             return $query;
         }
 
+        //Read a form
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['request_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE request_id=$this->id");
+
+              $row = mysqli_fetch_array($query); // fetch data
+
+            // Set properties
+            $this->request_id = $row['request_id'];
+            $this->sub_position = $row['sub_position'];
+            $this->email = $row['email'];
+            $this->phone_no = $row['phone_no'];
+            $this->description = $row['description'];
+      }
+        
         //Create function
         public function create(){
             $sqlQuery = "INSERT INTO
@@ -100,22 +119,11 @@
 
         //Delete Schedule
         public function delete () {
-            $sqlquery  =  "DELETE FROM $this->table WHERE request_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->request_id=htmlspecialchars(strip_tags($this->request_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->request_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
-
-        }
+            public function delete () {
+                $this->id = $_GET['request_id'];
+                $query = mysqli_query(
+                    $this->conn,
+                    "DELETE FROM " . $this->table . " WHERE request_id=$this->id");
+    
+            }
     }

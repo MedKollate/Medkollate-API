@@ -28,7 +28,7 @@ if ($num_rows > 0) {
             'contact_no' => $contact_no,
             'no_of_staff' => $no_of_staff,
             'location' => $location,
-            'gmail' => $gmail,
+            'email' => $email,
             'GRM' => $GRM
         );
 

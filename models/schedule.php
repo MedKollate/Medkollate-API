@@ -22,6 +22,25 @@
 
             return $query;
         }
+
+        //Read a schedule
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['appoint_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE appoint_id=$this->id");
+
+              $row = mysqli_fetch_array($query); // fetch data
+
+            // Set properties
+            $this->appoint_id = $row['appoint_id'];
+            $this->pat_id = $row['pat_id'];
+            $this->doc_id = $row['doc_id'];
+            $this->appoint_time = $row['appoint_time'];
+      }
+
         //Create function
         public function create(){
             $sqlQuery = "INSERT INTO
@@ -89,22 +108,10 @@
 
         //Delete Schedule
         public function delete () {
-            $sqluery  =  "DELETE FROM $this->table WHERE appoint_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->appoint_id=htmlspecialchars(strip_tags($this->appoint_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->appoint_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
+            $this->id = $_GET['schedule_id'];
+            $query = mysqli_query(
+                $this->conn,
+                "DELETE FROM " . $this->table . " WHERE schedule_id=$this->id");
 
         }
     }

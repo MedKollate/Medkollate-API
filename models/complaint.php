@@ -21,13 +21,31 @@
 
             return $query;
         }
-        //Create function
+
+        //Read a complaint
+        public function get_single() {
+            //collect the id from the url
+            $this->id = $_GET['complaint_id'];
+            // Create query
+            $query = mysqli_query(
+                $this->conn,
+                "SELECT * FROM " . $this->table . " WHERE complaint_id=$this->id");
+
+              $row = mysqli_fetch_array($query); // fetch data
+
+            // Set properties
+            $this->complaint_id = $row['complaint_id'];
+            $this->complaint_name = $row['complaint_name'];
+            $this->complaint = $row['complaint'];
+      }
+
+        //Create a complaint
         public function create(){
             $sqlQuery = "INSERT INTO
                         ". $this->table ."
                     SET
                         
-                    #complaint_id = ?, 
+                    complaint_id = ?, 
                     complaint_name= ?, 
                     complaint = ?";
                         
@@ -85,22 +103,10 @@
 
         //Delete Schedule
         public function delete () {
-            $sqlquery  =  "DELETE FROM $this->table WHERE complaint_id=?";
-
-            //prepare the query
-            $stmt = $this->conn->prepare($sqlquery);
-
-            //Sanitize data
-            $this->complaint_id=htmlspecialchars(strip_tags($this->complaint_id));
-
-            // bind parameters
-            $stmt->bind_param('i', $this->complaint_id);
-
-            if($stmt->execute()){ //Exexute query
-                return true;
-             }
-             printf("Error: %s.\n", $stmt->error);
-             return false;
+            $this->id = $_GET['complaint_id'];
+            $query = mysqli_query(
+                $this->conn,
+                "DELETE FROM " . $this->table . " WHERE complaint_id=$this->id");
 
         }
 
