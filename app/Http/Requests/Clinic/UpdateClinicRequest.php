@@ -9,7 +9,7 @@ class UpdateClinicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['sometimes'],
+            // 'user_id' => ['sometimes'],
 			'clinic_name' => ['sometimes', 'string'],
 			'address' => ['sometimes', 'string'],
 			'local_govt' => ['sometimes', 'string'],

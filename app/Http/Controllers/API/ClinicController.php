@@ -10,9 +10,12 @@ use App\Models\Clinic;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Essa\APIToolKit\Api\ApiResponse;
 
 class ClinicController extends Controller
 {
+    use APIResponse;
     public function __construct()
     {
 
@@ -27,9 +30,14 @@ class ClinicController extends Controller
 
     public function store(CreateClinicRequest $request): JsonResponse
     {
-        $clinic = Clinic::create($request->validated());
-
-        return $this->responseCreated('Clinic created successfully', new ClinicResource($clinic));
+        if (auth()->check()) {
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
+            $clinic = Clinic::create($data);
+            return $this->responseCreated('Clinic created successfully', new ClinicResource($clinic));
+        } else {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
     }
 
     public function show(Clinic $clinic): JsonResponse
