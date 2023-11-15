@@ -15,18 +15,42 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): Response
     {
-        $request->authenticate();
+        $credentials = $request->only('email', 'password');
 
-        // $request->session()->regenerate();
+        $user = Auth::guard('api')->getProvider()->retrieveByCredentials($credentials);
 
-        $token = Auth::user()->createToken('auth_token')->plainTextToken;
+        if ($user && Auth::guard('api')->getProvider()->validateCredentials($user, $credentials)) {
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = [
-            'user' => Auth::user(),
-            'access_token' => $token
-        ];
+            $response = [
+                'user' => $user,
+                'access_token' => $token
+            ];
 
-        return response($response, 201);
+            return response($response, 201);
+        }
+
+        return response(['message' => 'Invalid credentials'], 401);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication successful
+            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+
+            $response = [
+                'user' => Auth::user(),
+                'access_token' => $token
+            ];
+
+            return response($response, 201);
+        } else {
+            // Authentication failed
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
     }
 
     /**

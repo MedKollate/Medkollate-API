@@ -16,19 +16,12 @@ use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// require __DIR__.'/auth.php';
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('register', [RegisteredUserController::class, 'store']);
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    /*===========================
-    =           clinics           =
-    =============================*/
-
+// Route::post('register', [RegisteredUserController::class, 'store']);
+require __DIR__.'/auth.php';
+// Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/clinics', \App\Http\Controllers\API\ClinicController::class);
+    Route::apiResource('/staff', \App\Http\Controllers\API\StaffController::class);
 
-    /*=====  End of clinics   ======*/
 });
+
