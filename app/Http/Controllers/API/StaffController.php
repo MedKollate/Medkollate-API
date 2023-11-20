@@ -61,4 +61,10 @@ class StaffController extends Controller
         return $this->responseDeleted();
     }
 
+    // login route for staffs
+    public function login (Request $request, Staff $staff) 
+    {
+
+    }
+
 }
