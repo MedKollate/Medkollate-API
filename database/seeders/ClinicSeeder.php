@@ -9,11 +9,11 @@ class ClinicSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
-        Clinic::factory(1)->create();
+        Clinic::factory()
+            ->count(5)
+            ->create();
     }
 }

@@ -2,39 +2,28 @@
 
 namespace App\Models;
 
-use App\Filters\ClinicFilters;
-use Essa\APIToolKit\Filters\Filterable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Clinic extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory;
+    use Searchable;
 
-    protected string $default_filters = ClinicFilters::class;
-
-    /**
-     * Mass-assignable attributes.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'user_id',
-		'clinic_name',
-		'address',
-		'local_govt',
-		'state',
-		'reg_number',
-		'no_staff',
-		'no_dept',
-		'logo',
-		'payment',
+        'name',
+        'address',
+        'local_gov',
+        'state',
+        'reg_number',
+        'payment',
     ];
 
-	public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-	{
-		return $this->belongsTo(\App\Models\User::class);
-	}
+    protected $searchableFields = ['*'];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

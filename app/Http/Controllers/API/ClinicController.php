@@ -1,62 +1,68 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Clinic\CreateClinicRequest;
-use App\Http\Requests\Clinic\UpdateClinicRequest;
-use App\Http\Resources\Clinic\ClinicResource;
 use App\Models\Clinic;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Essa\APIToolKit\Api\ApiResponse;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ClinicResource;
+use App\Http\Resources\ClinicCollection;
+use App\Http\Requests\ClinicStoreRequest;
+use App\Http\Requests\ClinicUpdateRequest;
 
 class ClinicController extends Controller
 {
-    use APIResponse;
-    public function __construct()
+    public function index(Request $request): ClinicCollection
     {
+        $this->authorize('view-any', Clinic::class);
 
+        $search = $request->get('search', '');
+
+        $clinics = Clinic::search($search)
+            ->latest()
+            ->paginate();
+
+        return new ClinicCollection($clinics);
     }
 
-    public function index(): AnonymousResourceCollection 
+    public function store(ClinicStoreRequest $request): ClinicResource
     {
-        $clinics = Clinic::useFilters()->dynamicPaginate();
+        $this->authorize('create', Clinic::class);
 
-        return ClinicResource::collection($clinics);
+        $validated = $request->validated();
+
+        $clinic = Clinic::create($validated);
+
+        return new ClinicResource($clinic);
     }
 
-    public function store(CreateClinicRequest $request): JsonResponse
+    public function show(Request $request, Clinic $clinic): ClinicResource
     {
-        if (auth()->check()) {
-            $data = $request->validated();
-            $data['user_id'] = auth()->id();
-            $clinic = Clinic::create($data);
-            return $this->responseCreated('Clinic created successfully', new ClinicResource($clinic));
-        } else {
-            return response()->json(['error' => 'User not authenticated'], 401);
-        }
+        $this->authorize('view', $clinic);
+
+        return new ClinicResource($clinic);
     }
 
-    public function show(Clinic $clinic): JsonResponse
-    {
-        return $this->responseSuccess(null, new ClinicResource($clinic));
+    public function update(
+        ClinicUpdateRequest $request,
+        Clinic $clinic
+    ): ClinicResource {
+        $this->authorize('update', $clinic);
+
+        $validated = $request->validated();
+
+        $clinic->update($validated);
+
+        return new ClinicResource($clinic);
     }
 
-    public function update(UpdateClinicRequest $request, Clinic $clinic): JsonResponse
+    public function destroy(Request $request, Clinic $clinic): Response
     {
-        $clinic->update($request->validated());
+        $this->authorize('delete', $clinic);
 
-        return $this->responseSuccess('Clinic updated Successfully', new ClinicResource($clinic));
-    }
-
-    public function destroy(Clinic $clinic): JsonResponse
-    {
         $clinic->delete();
 
-        return $this->responseDeleted();
+        return response()->noContent();
     }
-
 }
