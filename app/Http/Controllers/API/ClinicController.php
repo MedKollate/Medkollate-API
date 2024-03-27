@@ -10,6 +10,9 @@ use App\Http\Resources\ClinicResource;
 use App\Http\Resources\ClinicCollection;
 use App\Http\Requests\ClinicStoreRequest;
 use App\Http\Requests\ClinicUpdateRequest;
+use Dotenv\Exception\ValidationException;
+use Error;
+use Illuminate\Support\Facades\Auth;
 
 class ClinicController extends Controller
 {
@@ -28,11 +31,21 @@ class ClinicController extends Controller
 
     public function store(ClinicStoreRequest $request): ClinicResource
     {
-        $this->authorize('create', Clinic::class);
+        // $this->authorize('create', Clinic::class);
+        $user = Auth::user();
+
+        if ($user->role != 'admin') {
+            throw Error::validation('Only Admins can create Clinics', ['Only Admins can create Clinics']);
+        }
+
 
         $validated = $request->validated();
 
         $clinic = Clinic::create($validated);
+
+        
+        // update user clinic_id to newly created clinic
+        $user->clinic_id = $request->clinic_id;
 
         return new ClinicResource($clinic);
     }
