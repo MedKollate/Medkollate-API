@@ -44,4 +44,9 @@ Route::name('api.')
         ])->name('clinics.users.store');
 
         Route::apiResource('users', UserController::class);
+
+        /////////////////////////////////
+        Route::get('patients', [UserController::class, 'patientsCount']);
+        Route::get('staff', [UserController::class, 'staffCount']);
+        Route::get('department', [UserController::class, ' departmentsCount']);
     });
