@@ -64,6 +64,26 @@ class StaffController extends Controller
     // login route for staffs
     public function login (Request $request, Staff $staff) 
     {
+           // Validate the request data
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // Attempt to authenticate the staff
+    $staff = Staff::where('email', $request->email)->first();
+
+    if (!$staff || !Hash::check($request->password, $staff->password)) {
+        // Authentication failed
+        return $this->responseUnauthorized('Invalid email or password');
+    }
+
+    // Generate a new API token for the staff
+    $token = $staff->createToken('staff-token')->plainTextToken;
+
+    // Return the token as a response
+    return $this->responseSuccess('Login successful', ['token' => $token]);
+
 
     }
 
