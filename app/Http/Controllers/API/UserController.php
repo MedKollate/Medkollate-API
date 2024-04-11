@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use Dotenv\Exception\ValidationException;
+
 
 class UserController extends Controller
 {
@@ -72,4 +74,47 @@ class UserController extends Controller
 
         return response()->noContent();
     }
+    public function patientsCount (User $user): Response
+    {
+        if ($user->role == 'admin') 
+        {
+            $ptCounts = DB::table('users')
+            ->where('row', 'patients')
+            ->get();
+
+            return response()->patientsCount()
+        } else {
+            throw Error::validation('Only Admins can view this', ['Only Admins can view this']);
+        }
+
 }
+ public function staffCount (User $user): Response
+    {
+        if ($user->role == 'admin') 
+        {
+            $staffCounts = DB::table('users')
+            ->where('row', 'Staff')
+            ->get();
+
+            return response()->staffCount()
+        } else {
+            throw Error::validation('Only Admins can view this', ['Only Admins can view this']);
+        }
+
+}
+ public function departmentsCount (User $user): Response
+    {
+        if ($user->role == 'admin') 
+        {
+            $deptCounts = DB::table('users')
+            ->where('row', 'Department')
+            ->get();
+
+            return response()->departmentsCount()
+        } else {
+            throw Error::validation('Only Admins can view this', ['Only Admins can view this']);
+        }
+
+}
+
+
